@@ -1,0 +1,2 @@
+# batch files must keep Windows line endings, or goto labels can fail
+*.bat text eol=crlf
