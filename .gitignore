@@ -1,0 +1,31 @@
+.venv/
+.sandbox/
+__pycache__/
+*.pyc
+build/
+dist/
+*.spec.bak
+.pytest_cache/
+.venv-gpu/
+
+# search-quality evaluation output (corpus, index)
+bench/search_eval/work/
+
+# local tooling, caches and machine-specific files
+.claude/
+.sandbox/
+*.egg-info/
+.env
+.env.*
+*.lnk
+*.ico
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# screenshots of the previous design (and two that show a local user name); not used by the docs
+docs/images/app_welcome.png
+docs/images/app_cleanup.png
+docs/images/app_organize_dark.png
+docs/images/quick_search_dark.png

@@ -1,0 +1,65 @@
+[project]
+name = "local-file-intelligence"
+version = "0.1.0"
+description = "Local-first, privacy-preserving desktop file organizer with semantic search, duplicate detection, and safe reversible cleanup."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+authors = [{ name = "Local File Intelligence contributors" }]
+dependencies = [
+    # UI (LGPL-3.0, dynamically linked)
+    "PySide6-Essentials>=6.8",
+    # Local embeddings on ONNX Runtime (Apache-2.0); pulls onnxruntime, tokenizers, numpy
+    "fastembed>=0.9.0",
+    # Vector search inside the same SQLite database (MIT / Apache-2.0)
+    "sqlite-vec>=0.1.6",
+    # Content hashing (CC0 / Apache-2.0)
+    "blake3>=1.0",
+    # Format extractors
+    "pypdfium2>=4.30",
+    "python-docx>=1.1",
+    "python-pptx>=1.0",
+    "openpyxl>=3.1",
+    "Pillow>=10.4",
+    # Perceptual image hashing (BSD-2)
+    "ImageHash>=4.3",
+    # Clustering and keyword labelling (BSD-3)
+    "scikit-learn>=1.5",
+    # Fast text similarity for near-duplicate document evidence (MIT)
+    "rapidfuzz>=3.9",
+    # Explicit, user-confirmed Recycle Bin deletion (BSD-3)
+    "Send2Trash>=1.8",
+    # Optional live re-indexing of watched folders (Apache-2.0)
+    "watchdog>=5.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-qt>=4.4", "pyinstaller>=6.10", "pypdf>=5.0"]
+
+[project.scripts]
+lfi = "lfi.cli:main"
+
+[project.gui-scripts]
+lfi-gui = "lfi.ui.app:main"
+lfi-quick = "lfi.ui.quick:main"
+
+[tool.uv]
+# onnxruntime 1.31.1 was published with cp311-only Windows wheels; Qwen3 int8 needs >=1.23.
+constraint-dependencies = ["onnxruntime>=1.23,<1.31.1"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lfi"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "model: requires a downloaded embedding model (deselect with -m 'not model')",
+    "gui: requires a Qt display",
+    "slow: long-running benchmark-style tests",
+]
+addopts = "-m 'not model and not slow'"
+qt_api = "pyside6"
